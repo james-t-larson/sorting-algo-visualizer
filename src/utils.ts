@@ -5,12 +5,29 @@ export const getRandomInt = (min: number, max: number) => {
 }
 
 export const createRandomArray = () => {
-  const length = 20;
+  const length = 5;
   const array = new Array();
   for (let i = 0; i <= length; i++) {
     array.push(getRandomInt(10, 500));
   }
   return array;
+}
+
+export const selectionSortStep = (arr: number[], currentStep: number): [number[], boolean] => {
+    if (currentStep >= arr.length - 1) return [arr, false];
+
+    let minIndex = currentStep;
+    for (let j = currentStep + 1; j < arr.length; j++) {
+        if (arr[j] < arr[minIndex]) {
+            minIndex = j;
+        }
+    }
+
+    if (minIndex !== currentStep) {
+        [arr[currentStep], arr[minIndex]] = [arr[minIndex], arr[currentStep]];
+    }
+
+    return [arr, true];
 }
 
 export const insertionSortStep = (arr: number[], currentIndex: number): number[] => {
