@@ -2,8 +2,12 @@ import { useEffect, useState } from 'react';
 import { bubbleSortUntilSwap, createRandomArray, insertionSortStep, selectionSortStep } from './utils';
 import NumberBar from './components/NumberBar';
 import './App.css';
+import { Algorithms, AlgorithmsMap } from './types';
 
 const App = () => {
+  const [currentAlgorithm, setCurrentAlgorithm] = useState<Algorithms>(
+    Algorithms.Bubble
+  );
   const [randomArray, setRandomArray] = useState(createRandomArray());
   const [insertionSort, setInsertionSort] = useState<{ currentIndex: number }>({
     currentIndex: 0,
@@ -15,6 +19,14 @@ const App = () => {
     isSorting: false,
     currentIndex: 0,
   });
+
+  const handleReset = () => {
+    setRandomArray(createRandomArray());
+  };
+
+  const handleBubbleSortStep = () => {
+    setRandomArray(bubbleSortUntilSwap([...randomArray]));
+  };
 
   const handleInsertionSortStep = () => {
     if (insertionSort.currentIndex < randomArray.length) {
@@ -46,13 +58,11 @@ const App = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("Selction Sort State Changed: ", selectionSort);
-  }, [selectionSort]);
-
-  useEffect(() => {
-    console.log("Array updated:", randomArray);
-  }, [randomArray]);
+  const algorithms: AlgorithmsMap = {
+    [Algorithms.Selection]: handleSelectionSortStep,
+    [Algorithms.Insertion]: handleInsertionSortStep,
+    [Algorithms.Bubble]: handleBubbleSortStep,
+  };
 
   return (
     <div className="app">
@@ -60,27 +70,23 @@ const App = () => {
         {randomArray.map((number) => (
           <NumberBar key={number} number={number} />
         ))}
-        <button
-          onClick={() => {
-            handleSelectionSortStep();
-          }}
-        >
-          Take Selection Sort Step Forward
-        </button>
-        <button
-          onClick={() => {
-            handleInsertionSortStep();
-          }}
-        >
-          Take Insertion Sort Step Forward
-        </button>
-        <button
-          onClick={() => {
-            setRandomArray(bubbleSortUntilSwap([...randomArray]));
-          }}
-        >
-          Take Bubble Sort Step Forward
-        </button>
+        <div>
+          <button onClick={algorithms[currentAlgorithm] || (() => {})}>
+            Take Step Forward
+          </button>
+          <select
+            onChange={(e) => setCurrentAlgorithm(e.target.value as Algorithms)}
+            value={currentAlgorithm}
+          >
+            <option value="">Select Algorithm</option>
+            {Object.keys(algorithms).map((key) => (
+              <option key={key} value={key}>
+                {key}
+              </option>
+            ))}
+          </select>
+          <button onClick={handleReset}>Reset</button>
+        </div>
       </>
     </div>
   );
