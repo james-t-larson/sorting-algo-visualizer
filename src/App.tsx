@@ -1,24 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
+import { bubbleSortUntilSwap, createRandomArray } from './utils';
+import NumberBar from './components/NumberBar';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [randomArray, setRandomArray] = useState(createRandomArray());
+
+  useEffect(() => {
+    console.log('testing', randomArray)
+  }, [randomArray])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className="app">
+      <>
+        {randomArray.map((number) => (
+          <NumberBar key={number} number={number} />
+        ))}
+        <button
+          onClick={() => {
+            setRandomArray(bubbleSortUntilSwap([...randomArray]));
+          }}
         >
-          Learn React
-        </a>
-      </header>
+          Take Step Forward
+        </button>
+      </>
     </div>
   );
 }
