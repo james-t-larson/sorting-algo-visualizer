@@ -13,6 +13,21 @@ export const createRandomArray = () => {
   return array;
 }
 
+export const insertionSortStep = (arr: number[], currentIndex: number): number[] => {
+    if (currentIndex <= 0 || currentIndex >= arr.length) return arr;
+
+    const currentVal = arr[currentIndex];
+    let position = currentIndex;
+
+    while (position > 0 && arr[position - 1] > currentVal) {
+        arr[position] = arr[position - 1];
+        position--;
+    }
+
+    arr[position] = currentVal;
+    return arr;
+}
+
 export const bubbleSortUntilSwap = (arr: number[]): number[] => {
     for (let i = 0; i < arr.length - 1; i++) {
         if (arr[i] > arr[i + 1]) {

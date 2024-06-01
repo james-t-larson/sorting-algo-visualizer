@@ -1,14 +1,25 @@
 import { useEffect, useState } from 'react';
-import { bubbleSortUntilSwap, createRandomArray } from './utils';
+import { bubbleSortUntilSwap, createRandomArray, insertionSortStep } from './utils';
 import NumberBar from './components/NumberBar';
 import './App.css';
 
 const App = () => {
   const [randomArray, setRandomArray] = useState(createRandomArray());
+  const [insertionSort, setInsertionSort] = useState<{ currentIndex: number }>({
+    currentIndex: 0,
+  });
+
+  const handleInsertionSortStep = () => {
+    if (insertionSort.currentIndex< randomArray.length) {
+      const newArray = insertionSortStep([...randomArray], insertionSort.currentIndex);
+      setRandomArray(newArray);
+      setInsertionSort({ ...insertionSort, currentIndex: insertionSort.currentIndex + 1});
+    }
+  };
 
   useEffect(() => {
-    console.log('testing', randomArray)
-  }, [randomArray])
+    console.log('Array updated:', randomArray);
+  }, [randomArray]);
 
   return (
     <div className="app">
@@ -18,10 +29,17 @@ const App = () => {
         ))}
         <button
           onClick={() => {
+            handleInsertionSortStep();
+          }}
+        >
+          Take Insertion Sort Step Forward
+        </button>
+        <button
+          onClick={() => {
             setRandomArray(bubbleSortUntilSwap([...randomArray]));
           }}
         >
-          Take Step Forward
+          Take Bubble Sort Step Forward
         </button>
       </>
     </div>
