@@ -5,7 +5,6 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
 import { useAlgorithmState } from '../hooks/useAlgorithmState';
 import { Algorithms } from '../types';
-import { cpuUsage } from 'process';
 
 const AlgoNavbar = () => {
   const { state, dispatch, algorithms } = useAlgorithmState();
