@@ -1,9 +1,16 @@
 .app {
   display: flex;
   align-items: flex-end;
-  height: 100vh;
+  height: 80vh;
   justify-content: center;
   text-align: center;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
 .number-bar {

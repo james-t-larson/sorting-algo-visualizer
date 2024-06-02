@@ -1,10 +1,20 @@
-import { useEffect, useState } from 'react';
-import { bubbleSortUntilSwap, createRandomArray, insertionSortStep, selectionSortStep } from './utils';
+import { useState } from 'react';
+import {
+  bubbleSortUntilSwap,
+  createRandomArray,
+  insertionSortStep,
+  selectionSortStep,
+} from "./utils";
 import NumberBar from './components/NumberBar';
 import './App.css';
 import { Algorithms, AlgorithmsMap } from './types';
+import { Button } from 'bootstrap-react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import AlgoNavbar from './components/AlgoNavbar';
+import { useAlgorithmState } from './hooks/useAlgorithmState';
 
 const App = () => {
+  const { state, dispatch, algorithms } = useAlgorithmState();
   const [currentAlgorithm, setCurrentAlgorithm] = useState<Algorithms>(
     Algorithms.Bubble
   );
@@ -58,37 +68,21 @@ const App = () => {
     }
   };
 
-  const algorithms: AlgorithmsMap = {
-    [Algorithms.Selection]: handleSelectionSortStep,
-    [Algorithms.Insertion]: handleInsertionSortStep,
-    [Algorithms.Bubble]: handleBubbleSortStep,
-  };
+  // const algorithms: AlgorithmsMap = {
+  //   [Algorithms.Selection]: handleSelectionSortStep,
+  //   [Algorithms.Insertion]: handleInsertionSortStep,
+  //   [Algorithms.Bubble]: handleBubbleSortStep,
+  // };
 
   return (
-    <div className="app">
-      <>
+    <>
+      <AlgoNavbar />
+      <div className="app">
         {randomArray.map((number) => (
           <NumberBar key={number} number={number} />
         ))}
-        <div>
-          <button onClick={algorithms[currentAlgorithm] || (() => {})}>
-            Take Step Forward
-          </button>
-          <select
-            onChange={(e) => setCurrentAlgorithm(e.target.value as Algorithms)}
-            value={currentAlgorithm}
-          >
-            <option value="">Select Algorithm</option>
-            {Object.keys(algorithms).map((key) => (
-              <option key={key} value={key}>
-                {key}
-              </option>
-            ))}
-          </select>
-          <button onClick={handleReset}>Reset</button>
-        </div>
-      </>
-    </div>
+      </div>
+    </>
   );
 }
 

@@ -5,10 +5,10 @@ export const getRandomInt = (min: number, max: number) => {
 }
 
 export const createRandomArray = () => {
-  const length = 5;
+  const length = 20;
   const array = new Array();
   for (let i = 0; i <= length; i++) {
-    array.push(getRandomInt(10, 500));
+    array.push(getRandomInt(50, 500));
   }
   return array;
 }
