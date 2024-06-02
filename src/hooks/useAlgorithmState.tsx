@@ -13,8 +13,8 @@ import { Algorithms } from '../types';
 interface AppState {
   currentAlgorithm: Algorithms;
   randomArray: number[];
-  insertionSort: { currentIndex: number };
-  selectionSort: { isSorting: boolean; currentIndex: number };
+  currentIndex: number;
+  selectionSort: { isSorting: boolean };
 }
 
 type Action =
@@ -30,8 +30,8 @@ type Action =
 const initialState: AppState = {
   currentAlgorithm: Algorithms.Bubble,
   randomArray: createRandomArray(),
-  insertionSort: { currentIndex: 0 },
-  selectionSort: { isSorting: false, currentIndex: 0 },
+  currentIndex: 0,
+  selectionSort: { isSorting: false },
 };
 
 const reducer = (state: AppState, action: Action): AppState => {
@@ -43,8 +43,8 @@ const reducer = (state: AppState, action: Action): AppState => {
         ...state,
         currentAlgorithm: action.payload,
         randomArray: createRandomArray(),
-        insertionSort: { currentIndex: 0 },
-        selectionSort: { isSorting: false, currentIndex: 0 },
+        currentIndex: 0,
+        selectionSort: { isSorting: false },
       };
     case "RESET_ARRAY":
       return { ...state, randomArray: createRandomArray() };
@@ -60,36 +60,33 @@ const reducer = (state: AppState, action: Action): AppState => {
     case "COMPLETE_SELECTION_SORT":
       return { ...state, randomArray: completeSelectionSort(state.randomArray) }
     case "INSERTION_SORT_STEP":
-      if (state.insertionSort.currentIndex < state.randomArray.length) {
+      if (state.currentIndex < state.randomArray.length) {
         const newArray = insertionSortStep(
           [...state.randomArray],
-          state.insertionSort.currentIndex
+          state.currentIndex
         );
         return {
           ...state,
           randomArray: newArray,
-          insertionSort: {
-            ...state.insertionSort,
-            currentIndex: state.insertionSort.currentIndex + 1,
-          },
+          currentIndex: state.currentIndex + 1,
         };
       }
       return state;
     case "SELECTION_SORT_STEP":
       if (
         state.selectionSort.isSorting ||
-        state.selectionSort.currentIndex === 0
+        state.currentIndex === 0
       ) {
         const [newArray, continueSorting] = selectionSortStep(
           [...state.randomArray],
-          state.selectionSort.currentIndex
+          state.currentIndex
         );
         return {
           ...state,
           randomArray: newArray,
+          currentIndex: state.currentIndex + 1,
           selectionSort: {
             isSorting: continueSorting,
-            currentIndex: state.selectionSort.currentIndex + 1,
           },
         };
       }

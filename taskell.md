@@ -11,6 +11,7 @@
     * [ ] Complete Bubble Sort
     * [ ] Complete Selection Sort
     * [ ] Complete Insertion Sort
+    * [x] Move current index out of algo specific states
 
 ## Done
 
