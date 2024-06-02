@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { ReactNode, createContext, useContext, useReducer } from 'react';
 import {
   bubbleSortUntilSwap,
   createRandomArray,
@@ -73,14 +73,36 @@ const reducer = (state: AppState, action: Action): AppState => {
   }
 };
 
-export const useAlgorithmState = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  const algorithms = {
-    [Algorithms.Selection]: () => dispatch({ type: 'SELECTION_SORT_STEP' }),
-    [Algorithms.Insertion]: () => dispatch({ type: 'INSERTION_SORT_STEP' }),
-    [Algorithms.Bubble]: () => dispatch({ type: 'BUBBLE_SORT_STEP' }),
+const AlgorithmStateContext = createContext<{
+  state: AppState;
+  dispatch: React.Dispatch<Action>;
+  algorithms: {
+    [Algorithms.Selection]: () => void;
+    [Algorithms.Insertion]: () => void;
+    [Algorithms.Bubble]: () => void;
   };
+}>({
+  state: initialState,
+  dispatch: () => undefined,
+  algorithms: {
+    [Algorithms.Selection]: () => undefined,
+    [Algorithms.Insertion]: () => undefined,
+    [Algorithms.Bubble]: () => undefined,
+  },
+});
 
-  return { state, dispatch, algorithms };
+export const AlgorithmProvider = ({ children }: { children: ReactNode }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const algorithms = {
+    [Algorithms.Selection]: () => dispatch({ type: "SELECTION_SORT_STEP" }),
+    [Algorithms.Insertion]: () => dispatch({ type: "INSERTION_SORT_STEP" }),
+    [Algorithms.Bubble]: () => dispatch({ type: "BUBBLE_SORT_STEP" }),
+  };
+  return (
+    <AlgorithmStateContext.Provider value={{ state, dispatch, algorithms }}>
+      {children}
+    </AlgorithmStateContext.Provider>
+  );
 };
+  
+export const useAlgorithmState = () => useContext(AlgorithmStateContext);
