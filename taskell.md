@@ -1,15 +1,16 @@
 ## To Do
 
-- Add complete algo button
-    * [ ] Should scramble array when pressed
-    * [ ] Should reset state when pressed
+- Make bars 3d
+- Add transition on bar movement
 
 ## Doing
 
-- Add header
-    * [ ] Move algo iterations into header
-    * [ ] Get bubble sort working
-    * [ ] Successfully move state to custom hook
+- Add complete algo button
+    * [ ] Complete Bubble Sort
+    * [ ] Complete Selection Sort
+    * [ ] Complete Insertion Sort
 
 ## Done
 
+- Add header
+- Show current algo somewhere

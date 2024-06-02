@@ -45,12 +45,12 @@ export const insertionSortStep = (arr: number[], currentIndex: number): number[]
     return arr;
 }
 
-export const bubbleSortUntilSwap = (arr: number[]): number[] => {
+export const bubbleSortUntilSwap = (arr: number[]): { array: number[], needsSwap: boolean } => {
     for (let i = 0; i < arr.length - 1; i++) {
         if (arr[i] > arr[i + 1]) {
             [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
-            return arr;
+            return { array: arr, needsSwap: true };
         }
     }
-    return arr;
+    return { array: arr, needsSwap: false };
 }

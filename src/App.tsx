@@ -17,10 +17,6 @@ const AppContent = () => {
   const { state, dispatch, algorithms } = useAlgorithmState();
   const { randomArray } = state;
 
-  useEffect(() => {
-    console.log('testing')
-  }, [randomArray])
-  
   return (
     <>
       <AlgoNavbar />

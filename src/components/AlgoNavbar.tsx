@@ -4,14 +4,11 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
 import { useAlgorithmState } from '../hooks/useAlgorithmState';
-import { useEffect } from 'react';
+import { Algorithms } from '../types';
 
 const AlgoNavbar = () => {
   const { state, dispatch, algorithms } = useAlgorithmState();
-
-  useEffect(() => {
-    console.log(state)
-  }, [state])
+  const { currentAlgorithm } = state;
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary navbar">
@@ -22,16 +19,35 @@ const AlgoNavbar = () => {
           <Nav className="me-auto">
             <NavDropdown title="Algorithms" id="basic-nav-dropdown">
               {Object.keys(algorithms).map((key) => (
-                <NavDropdown.Item href={key}>{key}</NavDropdown.Item>
+                <NavDropdown.Item
+                  onClick={() =>
+                    dispatch({
+                      type: "SET_ALGORITHM",
+                      payload: key as Algorithms,
+                    })
+                  }
+                >
+                  {key}
+                </NavDropdown.Item>
               ))}
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
-        <Button variant="primary" onClick={() => dispatch({ type: 'RESET_ARRAY' })}>Reset</Button>
-        <Button variant="primary" className="mx-1">
-          Run Algorithm
+        <Button
+          variant="primary"
+          onClick={() => dispatch({ type: "RESET_ARRAY" })}
+        >
+          Reset
         </Button>
-        <Button variant="primary">Take Step Forward</Button>
+        <Button variant="primary" className="mx-1">
+          Run {currentAlgorithm} Algorithm
+        </Button>
+        <Button
+          variant="primary"
+          onClick={ algorithms[currentAlgorithm] }
+        >
+          Take Step Forward
+        </Button>
       </Container>
     </Navbar>
   );

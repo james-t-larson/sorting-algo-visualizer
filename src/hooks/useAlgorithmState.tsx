@@ -30,13 +30,22 @@ const initialState: AppState = {
 
 const reducer = (state: AppState, action: Action): AppState => {
   switch (action.type) {
-    case 'SET_ALGORITHM':
-      return { ...state, currentAlgorithm: action.payload };
-    case 'RESET_ARRAY':
+    case "SET_ALGORITHM":
+      return {
+        ...state,
+        currentAlgorithm: action.payload,
+        randomArray: createRandomArray(),
+        insertionSort: { currentIndex: 0 },
+        selectionSort: { isSorting: false, currentIndex: 0 },
+      };
+    case "RESET_ARRAY":
       return { ...state, randomArray: createRandomArray() };
-    case 'BUBBLE_SORT_STEP':
-      return { ...state, randomArray: bubbleSortUntilSwap([...state.randomArray]) };
-    case 'INSERTION_SORT_STEP':
+    case "BUBBLE_SORT_STEP":
+      return {
+        ...state,
+        randomArray: bubbleSortUntilSwap([...state.randomArray]).array,
+      };
+    case "INSERTION_SORT_STEP":
       if (state.insertionSort.currentIndex < state.randomArray.length) {
         const newArray = insertionSortStep(
           [...state.randomArray],
@@ -52,8 +61,11 @@ const reducer = (state: AppState, action: Action): AppState => {
         };
       }
       return state;
-    case 'SELECTION_SORT_STEP':
-      if (state.selectionSort.isSorting || state.selectionSort.currentIndex === 0) {
+    case "SELECTION_SORT_STEP":
+      if (
+        state.selectionSort.isSorting ||
+        state.selectionSort.currentIndex === 0
+      ) {
         const [newArray, continueSorting] = selectionSortStep(
           [...state.randomArray],
           state.selectionSort.currentIndex
