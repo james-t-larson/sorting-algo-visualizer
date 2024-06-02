@@ -5,7 +5,7 @@ import { AlgorithmProvider, useAlgorithmState } from './hooks/useAlgorithmState'
 import './App.css';
 
 const AppContent = () => {
-  const { state, algorithms } = useAlgorithmState();
+  const { state } = useAlgorithmState();
   const { randomArray } = state;
 
   return (

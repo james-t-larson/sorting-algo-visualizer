@@ -55,4 +55,4 @@ const AlgoNavbar = () => {
   );
 };
 
-export default AlgoNavbar;
+export default AlgoNavbar

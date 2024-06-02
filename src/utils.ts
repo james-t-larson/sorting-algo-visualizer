@@ -25,9 +25,24 @@ export const selectionSortStep = (arr: number[], currentStep: number): [number[]
 
     if (minIndex !== currentStep) {
         [arr[currentStep], arr[minIndex]] = [arr[minIndex], arr[currentStep]];
+        return [arr, true];
     }
 
-    return [arr, true];
+    return [arr, false];
+}
+
+export const completeSelectionSort = (arr: number[]): number[] => {
+    let currentStep = 0;
+    let swapped = true;
+
+    while (currentStep < arr.length - 1 && swapped) {
+        let result;
+        [result, swapped] = selectionSortStep(arr, currentStep);
+        arr = result;
+        currentStep++;
+    }
+
+    return arr;
 }
 
 export const insertionSortStep = (arr: number[], currentIndex: number): number[] => {
@@ -42,6 +57,13 @@ export const insertionSortStep = (arr: number[], currentIndex: number): number[]
     }
 
     arr[position] = currentVal;
+    return arr;
+}
+
+export const completeInsertionSort = (arr: number[]): number[] => {
+    for (let i = 1; i < arr.length; i++) {
+        arr = insertionSortStep(arr, i);
+    }
     return arr;
 }
 

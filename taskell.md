@@ -5,11 +5,12 @@
 
 ## Doing
 
-- Add complete algo button
-    * [ ] Complete Selection Sort
-    * [ ] Complete Insertion Sort
 
 ## Done
 
 - Add header
 - Show current algo somewhere
+- Add complete algo button
+    * [x] Complete Selection Sort
+    * [x] Complete Bubble Sort
+    * [x] Complete Insertion Sort

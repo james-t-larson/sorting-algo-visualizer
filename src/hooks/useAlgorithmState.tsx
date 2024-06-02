@@ -2,6 +2,8 @@ import { ReactNode, createContext, useContext, useReducer } from 'react';
 import {
   bubbleSortUntilSwap,
   completeBubbleSort,
+  completeInsertionSort,
+  completeSelectionSort,
   createRandomArray,
   insertionSortStep,
   selectionSortStep,
@@ -19,9 +21,11 @@ type Action =
   | { type: 'SET_ALGORITHM'; payload: Algorithms }
   | { type: 'RESET_ARRAY' }
   | { type: 'BUBBLE_SORT_STEP' }
-  | { type: 'COMPLETE_BUBBLE_SORT' }
   | { type: 'INSERTION_SORT_STEP' }
-  | { type: 'SELECTION_SORT_STEP' };
+  | { type: 'SELECTION_SORT_STEP' }
+  | { type: 'COMPLETE_BUBBLE_SORT' }
+  | { type: 'COMPLETE_INSERTION_SORT' }
+  | { type: 'COMPLETE_SELECTION_SORT' };
 
 const initialState: AppState = {
   currentAlgorithm: Algorithms.Bubble,
@@ -49,8 +53,12 @@ const reducer = (state: AppState, action: Action): AppState => {
         ...state,
         randomArray: bubbleSortUntilSwap([...state.randomArray]).array,
       };
-    case "COMPLETE_BUBBLE_SORT": 
+    case "COMPLETE_INSERTION_SORT":
+      return { ...state, randomArray: completeInsertionSort(state.randomArray) }
+    case "COMPLETE_BUBBLE_SORT":
       return { ...state, randomArray: completeBubbleSort(state.randomArray) }
+    case "COMPLETE_SELECTION_SORT":
+      return { ...state, randomArray: completeSelectionSort(state.randomArray) }
     case "INSERTION_SORT_STEP":
       if (state.insertionSort.currentIndex < state.randomArray.length) {
         const newArray = insertionSortStep(
@@ -132,11 +140,11 @@ export const AlgorithmProvider = ({ children }: { children: ReactNode }) => {
   const algorithms = {
     [Algorithms.Selection]: {
       singleStep: () => dispatch({ type: "SELECTION_SORT_STEP" }),
-      complete: () => {},
+      complete: () => dispatch({ type: "COMPLETE_SELECTION_SORT" }),
     },
     [Algorithms.Insertion]: {
       singleStep: () => dispatch({ type: "INSERTION_SORT_STEP" }),
-      complete: () => {},
+      complete: () => dispatch({ type: "COMPLETE_INSERTION_SORT" }),
     },
     [Algorithms.Bubble]: {
       singleStep: () => dispatch({ type: "BUBBLE_SORT_STEP" }),
