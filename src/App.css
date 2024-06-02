@@ -18,4 +18,5 @@
   background-color: blue;
   margin: 2px;
   text-align: center;
+  transition: 500ms;
 }
