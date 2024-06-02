@@ -45,6 +45,14 @@ export const insertionSortStep = (arr: number[], currentIndex: number): number[]
     return arr;
 }
 
+export const completeBubbleSort = (arr: number[]): number[] => {
+    let result = bubbleSortUntilSwap(arr);
+    while (result.needsSwap) {
+        result = bubbleSortUntilSwap(result.array);
+    }
+    return result.array;
+}
+
 export const bubbleSortUntilSwap = (arr: number[]): { array: number[], needsSwap: boolean } => {
     for (let i = 0; i < arr.length - 1; i++) {
         if (arr[i] > arr[i + 1]) {

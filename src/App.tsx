@@ -1,20 +1,11 @@
-import { useEffect, useState } from 'react';
-import {
-  bubbleSortUntilSwap,
-  createRandomArray,
-  insertionSortStep,
-  selectionSortStep,
-} from "./utils";
 import NumberBar from './components/NumberBar';
-import './App.css';
-import { Algorithms, AlgorithmsMap } from './types';
-import { Button } from 'bootstrap-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AlgoNavbar from './components/AlgoNavbar';
 import { AlgorithmProvider, useAlgorithmState } from './hooks/useAlgorithmState';
+import './App.css';
 
 const AppContent = () => {
-  const { state, dispatch, algorithms } = useAlgorithmState();
+  const { state, algorithms } = useAlgorithmState();
   const { randomArray } = state;
 
   return (
@@ -22,7 +13,7 @@ const AppContent = () => {
       <AlgoNavbar />
       <div className="app">
         {randomArray.map((number) => (
-          <NumberBar key={number} number={number} />
+          <NumberBar number={number} />
         ))}
       </div>
     </>

@@ -6,7 +6,6 @@
 ## Doing
 
 - Add complete algo button
-    * [ ] Complete Bubble Sort
     * [ ] Complete Selection Sort
     * [ ] Complete Insertion Sort
 

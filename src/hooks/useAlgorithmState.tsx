@@ -1,6 +1,7 @@
 import { ReactNode, createContext, useContext, useReducer } from 'react';
 import {
   bubbleSortUntilSwap,
+  completeBubbleSort,
   createRandomArray,
   insertionSortStep,
   selectionSortStep,
@@ -18,6 +19,7 @@ type Action =
   | { type: 'SET_ALGORITHM'; payload: Algorithms }
   | { type: 'RESET_ARRAY' }
   | { type: 'BUBBLE_SORT_STEP' }
+  | { type: 'COMPLETE_BUBBLE_SORT' }
   | { type: 'INSERTION_SORT_STEP' }
   | { type: 'SELECTION_SORT_STEP' };
 
@@ -29,6 +31,8 @@ const initialState: AppState = {
 };
 
 const reducer = (state: AppState, action: Action): AppState => {
+  console.log("ACTION", action)
+  console.log("STATE", state) 
   switch (action.type) {
     case "SET_ALGORITHM":
       return {
@@ -45,6 +49,8 @@ const reducer = (state: AppState, action: Action): AppState => {
         ...state,
         randomArray: bubbleSortUntilSwap([...state.randomArray]).array,
       };
+    case "COMPLETE_BUBBLE_SORT": 
+      return { ...state, randomArray: completeBubbleSort(state.randomArray) }
     case "INSERTION_SORT_STEP":
       if (state.insertionSort.currentIndex < state.randomArray.length) {
         const newArray = insertionSortStep(
@@ -89,26 +95,53 @@ const AlgorithmStateContext = createContext<{
   state: AppState;
   dispatch: React.Dispatch<Action>;
   algorithms: {
-    [Algorithms.Selection]: () => void;
-    [Algorithms.Insertion]: () => void;
-    [Algorithms.Bubble]: () => void;
+    [Algorithms.Selection]: {
+      singleStep: () => void
+      complete: () => void
+    };
+    [Algorithms.Insertion]: {
+      singleStep: () => void
+      complete: () => void
+    };
+    [Algorithms.Bubble]: {
+      singleStep: () => void
+      complete: () => void
+    };
   };
 }>({
   state: initialState,
   dispatch: () => undefined,
   algorithms: {
-    [Algorithms.Selection]: () => undefined,
-    [Algorithms.Insertion]: () => undefined,
-    [Algorithms.Bubble]: () => undefined,
+    [Algorithms.Selection]: {
+      singleStep: () => undefined,
+      complete: () => undefined
+    },
+    [Algorithms.Insertion]: {
+      singleStep: () => undefined,
+      complete: () => undefined
+    },
+    [Algorithms.Bubble]: {
+      singleStep: () => undefined,
+      complete: () => undefined
+    },
   },
 });
 
 export const AlgorithmProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const algorithms = {
-    [Algorithms.Selection]: () => dispatch({ type: "SELECTION_SORT_STEP" }),
-    [Algorithms.Insertion]: () => dispatch({ type: "INSERTION_SORT_STEP" }),
-    [Algorithms.Bubble]: () => dispatch({ type: "BUBBLE_SORT_STEP" }),
+    [Algorithms.Selection]: {
+      singleStep: () => dispatch({ type: "SELECTION_SORT_STEP" }),
+      complete: () => {},
+    },
+    [Algorithms.Insertion]: {
+      singleStep: () => dispatch({ type: "INSERTION_SORT_STEP" }),
+      complete: () => {},
+    },
+    [Algorithms.Bubble]: {
+      singleStep: () => dispatch({ type: "BUBBLE_SORT_STEP" }),
+      complete: () => dispatch({ type: "COMPLETE_BUBBLE_SORT" }),
+    },
   };
   return (
     <AlgorithmStateContext.Provider value={{ state, dispatch, algorithms }}>

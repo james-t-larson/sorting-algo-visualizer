@@ -5,6 +5,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
 import { useAlgorithmState } from '../hooks/useAlgorithmState';
 import { Algorithms } from '../types';
+import { cpuUsage } from 'process';
 
 const AlgoNavbar = () => {
   const { state, dispatch, algorithms } = useAlgorithmState();
@@ -39,13 +40,14 @@ const AlgoNavbar = () => {
         >
           Reset
         </Button>
-        <Button variant="primary" className="mx-1">
-          Run {currentAlgorithm} Algorithm
-        </Button>
         <Button
           variant="primary"
-          onClick={ algorithms[currentAlgorithm] }
+          className="mx-1"
+          onClick={algorithms[currentAlgorithm].complete}
         >
+          Run {currentAlgorithm} Algorithm
+        </Button>
+        <Button variant="primary" onClick={algorithms[currentAlgorithm].singleStep}>
           Take Step Forward
         </Button>
       </Container>
